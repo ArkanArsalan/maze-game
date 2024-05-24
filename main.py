@@ -86,3 +86,68 @@ def process_keydown(key, player, maze, game_won):
                     return 'won'  # Return a special value indicating the player has won
 
     return None  # Continue the game loop for other key handling
+
+
+def display_message(message):
+    """Display a message in the center of the screen."""
+    font = pygame.font.Font(None, 36)
+    text = font.render(message, True, (255, 255, 255))
+    text_rect = text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+    screen.blit(text, text_rect)
+
+def display_info():
+    """Display the info message at the bottom of the screen."""
+    font = pygame.font.Font(None, 36)
+    text = font.render(INFO_MESSAGE, True, (255, 255, 255))
+    text_rect = text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 20))
+    screen.blit(text, text_rect)
+
+def main():
+    maze = generate_maze(SCREEN_WIDTH // CELL_SIZE, SCREEN_HEIGHT // CELL_SIZE)
+    player = Player(1, 1)
+    game_won = False  # Track whether the player has won the game
+
+    running = True
+    while running:
+        result = process_events(player, maze, game_won)
+        if result == 'won':
+            game_won = True  # Set the game won flag
+        elif result is not None:
+            maze = result
+            game_won = False  # Reset the game won flag
+
+        screen.fill(BACKGROUND_COLOR)
+        draw_maze(maze, player)
+        if game_won:
+            display_message(FINAL_CELL_MESSAGE)
+            display_info()
+        pygame.display.flip()
+        clock.tick(FPS)
+
+        # If the game is won, wait for 'R' or 'E' key press
+        while game_won:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    game_won = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        maze = generate_maze(SCREEN_WIDTH // CELL_SIZE, SCREEN_HEIGHT // CELL_SIZE)
+                        player = Player(1, 1)
+                        game_won = False  # Exit the inner loop and continue the game
+                    if event.key == pygame.K_e:
+                        pygame.quit()
+                        sys.exit()
+
+            screen.fill(BACKGROUND_COLOR)
+            draw_maze(maze, player)
+            display_message(FINAL_CELL_MESSAGE)
+            display_info()
+            pygame.display.flip()
+            clock.tick(FPS)
+
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    main()
