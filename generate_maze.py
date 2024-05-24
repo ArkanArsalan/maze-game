@@ -2,8 +2,8 @@
 
 import random
 
+# Function to find valid neighbour
 def find_neighbors(x, y, width, height, maze):
-    """Identify and return valid neighboring cells for maze generation."""
     neighbors = []
     if x > 1 and maze[y][x - 2] == 'W':
         neighbors.append((x - 2, y))
@@ -15,8 +15,8 @@ def find_neighbors(x, y, width, height, maze):
         neighbors.append((x, y + 2))
     return neighbors
 
+# Function to connect cell
 def connect_cells(maze, cell, next_cell):
-    """Connect the current cell to the chosen next cell in the maze."""
     x, y = cell
     nx, ny = next_cell
     if nx == x:
@@ -24,6 +24,7 @@ def connect_cells(maze, cell, next_cell):
     else:
         maze[y][min(nx, x) + 1] = 'P'
 
+# Function to generate maze
 def generate_maze(width, height):
     maze = [['W' for _ in range(width)] for _ in range(height)]
     stack = [(1, 1)]
