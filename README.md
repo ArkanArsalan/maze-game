@@ -1,4 +1,4 @@
-# Praktikum Modul 4 _(Module 4 Lab Work)_
+# MAZE GAME
 |    NRP     |      Name      |
 | :--------: | :------------: |
 | 5025221003 | Dana Saputra |
